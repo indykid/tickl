@@ -1,8 +1,18 @@
 class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
+
+  before_filter :authenticate
+
+  # def user_home
+  #   @task = current_user.tasks.new(params[:task])
+  #   @tasks = current_user.tasks
+
+  # end
+
   def index
-    @tasks = Task.all
+    @task = current_user.tasks.new
+    @tasks = current_user.due_tasks
 
     respond_to do |format|
       format.html # index.html.erb
@@ -26,8 +36,6 @@ class TasksController < ApplicationController
   def new
     @task = Task.new
 
-    @tasks = Task.all
-
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @task }
@@ -42,8 +50,9 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
-    @task = Task.new(params[:task])
 
+    @task = Task.new(params[:task])
+    @task.user = current_user
     
 
     respond_to do |format|

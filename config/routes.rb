@@ -1,6 +1,10 @@
 Tickle::Application.routes.draw do
 
-  #root to: "tasks#index"
+  resources :sessions, only: [ :new, :create, :destroy ]
+  get "login", to: "sessions#new"
+
+  root to: "tasks#index"
+  #root to: "tasks#home"
   resources :users
 
   resources :tasks

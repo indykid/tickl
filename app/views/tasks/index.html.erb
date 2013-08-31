@@ -8,11 +8,10 @@
     <th></th>
     <th></th>
   </tr>
-
+<%# total_work(@tasks) %>
 <% @tasks.each do |task| %>
   <tr>
-    <td><%= task.title %></td>
-    <td><%= task.completed %></td>
+    <td><%= link_to task.title,  %></td>
     <td><%= link_to 'Show', task %></td>
     <td><%= link_to 'Edit', edit_task_path(task) %></td>
     <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
