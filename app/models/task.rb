@@ -18,10 +18,13 @@ class Task < ActiveRecord::Base
     !self.intervals.last.stop_time.nil? 
   end
 
-  def resume?
-    !self.intervals.empty?
+  def not_started?
+    self.intervals.empty?
   end
 
+  def resume?
+    !self.intervals.empty? && self.completed == false
+  end
 
   def create_interval(state = "work")
     self.intervals.create!(state: state, start_time: DateTime.now)

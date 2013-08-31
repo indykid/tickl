@@ -12,7 +12,7 @@ class TasksController < ApplicationController
 
   def index
     @task = current_user.tasks.new
-    @tasks = current_user.due_tasks
+    @tasks = current_user.tasks.due_tasks
 
     respond_to do |format|
       format.html # index.html.erb

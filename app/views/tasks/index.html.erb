@@ -1,24 +1,42 @@
-<h1>Listing tasks</h1>
 
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Completed</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-<%# total_work(@tasks) %>
-<% @tasks.each do |task| %>
-  <tr>
-    <td><%= link_to task.title,  %></td>
-    <td><%= link_to 'Show', task %></td>
-    <td><%= link_to 'Edit', edit_task_path(task) %></td>
-    <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
+<div>
+  <%= render 'form' %>
+</div>
 <br />
+<div>
 
-<%= link_to 'New Task', new_task_path %>
+  <h3>TODAY:</h3>
+
+  <table>
+    <tr>
+      <th>FOCUS TIME</th>
+      <th>BREAK TIME</th>
+    </tr>
+    <tr>
+      <td><%= today_total_work(@tasks) %> </td>
+      <td><%= today_total_breaks(@tasks) %> </td>
+    </tr>
+  </table>
+
+  <table>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td><%= link_to task.title, edit_task_path(task.id) %></td>
+        <td><%= task_total_work(task) %></td>
+        <td><%= link_to 'EDIT', edit_task_path(task) %></td>
+        <% if task.resume? %>
+          <td><div><%= link_to 'RESUME', task %></div></td>
+          <td><div><%= link_to 'COMPLETE', task %></div></td>
+        <% end %>
+        <% if task.not_started? %>
+          <td><div><%= link_to 'START', task %></div></td>
+          <td><div><%= link_to 'DELETE', task, method: :delete, data: { confirm: 'Are you sure?' } %><div></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+
+
+

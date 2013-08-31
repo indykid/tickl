@@ -11,11 +11,10 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :title %><br />
-    <%= f.text_field :title %>
+  <div class="float field">
+    <%= f.text_field :title, placeholder: "task name" %>
   </div>
-  <div class="field">
+  <div class="float field">
     <%= f.label "Start now?" %>
     <%= f.check_box :start_now, checked: true %>
   </div>
@@ -23,7 +22,8 @@
     <%#= f.label :completed %>
     <%#= f.check_box :completed %>
   
-  <div class="actions">
-    <%= f.submit %>
+  <div class="float actions">
+    <%= f.submit 'BEGIN'%>
+    <%= f.submit 'ADD'%>
   </div>
 <% end %>
