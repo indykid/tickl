@@ -28,6 +28,7 @@ class TasksController < ApplicationController
         hash = {
           resume: current_user.tasks.tasks_to_resume,
           start: current_user.tasks.tasks_to_start,
+          running: current_user.tasks.running.first
         }
         render json: hash 
       }
@@ -62,9 +63,10 @@ class TasksController < ApplicationController
     redirect_to @task
   end
 
+
   def start
     @task = Task.find(params[:id]).create_interval
-    redirect_to task_url(@task.id)
+    redirect_to root_path#task_url(@task.id)
   end
 
   def stop_timer

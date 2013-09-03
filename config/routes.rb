@@ -11,6 +11,7 @@ Tickle::Application.routes.draw do
   resources :tasks
   
   get "login", to: "sessions#new"
+  get "tasks/running", to: "tasks#running", as: "running"
   get "tasks/:id/complete", to: "tasks#complete", as: "complete"
   get "tasks/:id/take_break", to: "tasks#take_break", as: "break"
   get "tasks/:id/stop_timer", to: "tasks#stop_timer", as: "stop"

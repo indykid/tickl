@@ -17,7 +17,7 @@
 #left-sidebar {
   float: left;
   width: 15%;
-  padding: 15px;
+  //padding: 15px;
   background-color: black;//#9AC0CD;
   color: white;
   /* RGBa with 0.6 opacity */
@@ -34,10 +34,10 @@ h1 {
 
 #right-sidebar {
   float: right;
-  width: 42%;
+  width: 30%;
   //height: 100%;
-  padding: 15px;
-  border-left: 2px dotted #B4CDCD;
+  //padding: 10px;
+  //border-left: 2px dotted #B4CDCD;
   background-color: #4F534F;
   
 }
@@ -47,7 +47,7 @@ h1 {
 
 #container {
   float: left;
-  width: 43%;
+  width: 50%;
   padding: 15px;
 }
 

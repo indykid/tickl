@@ -6,9 +6,11 @@ $(function(){
   // }
 
 
-    function new_table_row(container, data){
-      $(container).prepend("<tr><td>"+data.title+"</td><td>0</td><td><a href='/tasks/"+data.id+"/start'>START</a></td><td><a href='/tasks/"+data.id+"' data-confirm='Are you sure?' data-method='delete' rel='nofollow'>DELETE</a></td></tr>" );
-    }
+  function new_table_row(container, data, resume){
+    //link = resume //STOPPED HERE
+    $(container).prepend("<tr><td>"+data.title+"</td><td>0</td><td><a href='/tasks/"+data.id+"/start'>START</a></td><td><a href='/tasks/"+data.id+"' data-confirm='Are you sure?' data-method='delete' rel='nofollow'>DELETE</a></td></tr>" );
+  }
+
 
   $("#new_task").on("submit", function(event){
     event.preventDefault();
@@ -26,19 +28,25 @@ $(function(){
 
   });
 
-  $.ajax({
-    url: "/tasks.json",
-    success: function(data){
-      $.each(data.resume, function(index, task){
-        new_table_row("#resume_tasks", task);
-      })
+  // $.ajax({
+  //   url: "/tasks.json",
+  //   success: function(data){
+  //     $.each(data.resume, function(index, task){
+  //       new_table_row("#resume_tasks", task);
+  //     })
 
-      $.each(data.start, function(index, task){
-        new_table_row("#start_tasks", task);
-      })
+  //     $.each(data.start, function(index, task){
+  //       new_table_row("#start_tasks", task);
+  //     })
       
-    }
-  })
+  //   }
+  // })
     
+    $.ajax({
+      url:"/tasks/running",
+      success: function(data){
+        console.log(data)
+      }
+    })
 });
 
