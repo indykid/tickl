@@ -5,37 +5,45 @@ class Task < ActiveRecord::Base
   belongs_to :user
   has_many :intervals
 
-  after_create :create_interval, :if => :start_now 
+  after_create :create_interval, :if => :start_now?
 
+  scope :todo, where(completed: false)
+  scope :done, where(completed: true)
+  scope :updated_today, lambda { where('updated_at > ?', Time.now.midnight.utc) }
 
-  scope :due_tasks, -> { where(completed: false) }
+  scope :running, joins(:intervals).where('intervals.stop_time is NULL')
+  scope :today, 
 
-  def start
-    create_interval
+  def create_interval(state = "work")
+    #if it has any running update its stop time
+    self.intervals.create!(state: state, start_time: DateTime.now)
+    self
   end
 
-  def active?
-    !self.intervals.last.stop_time.nil? 
+  # def self.running_task(user)
+  #   current_user_tasks = self.where(user_id: user.id)
+  #   current_user_tasks.detect do |task|
+  #     task.intervals.select { |interval| interval.stop_time.nil? }.any?
+  #   end
+  # end
+
+  def active? #show.html
+    self.intervals.last.stop_time.nil? if self.intervals.last
   end
 
-  def not_started?
+  def not_started? #index.html
     self.intervals.empty?
   end
 
-  def resume?
+  def resume? #index.html
     !self.intervals.empty? && self.completed == false
-  end
-
-  def create_interval(state = "work")
-    self.intervals.create!(state: state, start_time: DateTime.now)
   end
 
   def stop_last_interval
     self.intervals.last.update_attributes(stop_time: DateTime.now)
   end 
 
-  #not sure i need this method now:
-  def start_break
+  def take_break # tasks#take_break
     current_interval = self.intervals.where(state: "work").last
 
     #self.intervals.where('stop_time is ? and state = ?', nil, "work").first
@@ -45,7 +53,35 @@ class Task < ActiveRecord::Base
 
   def complete
     self.intervals.last.update_attributes(stop_time: DateTime.now)
-    self.update_attributes(complete: true)
+    self.update_attributes(completed: true)
   end
+
+  def start_now? #controller
+    self.start_now == "0" ? false : true 
+  end
+
+  def last_interval #task_helper
+    self.intervals.last
+  end
+
+  def working?
+    self.active? && self.last_interval.work?
+  end
+
+  def on_break?
+    self.active? && self.last_interval.break?
+  end
+
+  def self.tasks_to_resume
+    where(completed: false).order('tasks.updated_at desc').includes(:intervals).select(&:resume?) 
+  end
+
+  def self.tasks_to_start
+    where(completed: false).order('tasks.updated_at desc').includes(:intervals).select(&:not_started?) 
+  end
+  # tasks_to_resume = tasks_in_desc.select(&:resume?) 
+  #   tasks_not_started = tasks_in_desc.select(&:not_started?)
+
+
 
 end

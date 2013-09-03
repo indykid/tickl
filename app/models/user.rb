@@ -16,5 +16,16 @@ class User < ActiveRecord::Base
 
   validates :password_confirmation, presence: true 
 
+
+  def todo_in_desc
+    tasks_in_desc = tasks.where(completed: false).order('tasks.updated_at desc').includes(:intervals)
+    tasks_to_resume = tasks_in_desc.select(&:resume?) 
+    tasks_not_started = tasks_in_desc.select(&:not_started?)
+    tasks_to_resume + tasks_not_started
+    #task status is resume (array ordered by desc)
+    #to_start_tasks = # where task status is to_start
+    #resume_tasks.merge to_start_tasks
+  end
+
 end
 

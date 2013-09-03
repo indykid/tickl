@@ -1,0 +1,31 @@
+<h4>current task:</h4>
+  <h2><%= @task.title %></h2>
+
+  <% if @task.working? %>
+    <p>focus:</p>
+  <% elsif @task.on_break? %>
+    <p>on break:</p>
+  <% end %>
+    <div><%= current_duration(@task) %>
+    </div>
+
+<br />
+<br />
+
+
+    <div class="float"><%= link_to "COMPLETE", complete_path(@task.id) %></div>
+    <div><%= link_to "BREAK", break_path(@task.id) %></div>
+    <div><%= link_to "STOP TIMER", stop_path(@task.id) %></div>
+
+
+
+<table>
+  <tr>
+    <th>work</th>
+    <th>breaks</th>
+  </tr>
+  <tr>
+    <td><%= task_total_work(@task) %></td>
+    <td><%= task_total_breaks(@task) %></td>
+  </tr>
+</table>

@@ -5,6 +5,10 @@
 <br />
 <div>
 
+  <script>
+    window.isRunningTask = <%= !@running_task.nil? %>;
+  </script>
+
   <h3>TODAY:</h3>
 
   <table>
@@ -13,28 +17,46 @@
       <th>BREAK TIME</th>
     </tr>
     <tr>
-      <td><%= today_total_work(@tasks) %> </td>
-      <td><%= today_total_breaks(@tasks) %> </td>
+      <td><%= today_total_work(@worked_on_today) %> </td>
+      <td><%= today_total_breaks(@worked_on_today) %> </td>
     </tr>
   </table>
 
-  <table>
-    <% @tasks.each do |task| %>
+  <h4>TO DO:</h4>
+
+  <table id="resume_tasks"></table>
+  <table id="start_tasks"></table>
+
+
+  <!-- <table id="tasks_table">
+    <% @todo_tasks.each do |task| %>
       <tr>
-        <td><%= link_to task.title, edit_task_path(task.id) %></td>
+        <td><%= link_to task.title, task_path(task) %></td>
         <td><%= task_total_work(task) %></td>
-        <td><%= link_to 'EDIT', edit_task_path(task) %></td>
         <% if task.resume? %>
-          <td><div><%= link_to 'RESUME', task %></div></td>
-          <td><div><%= link_to 'COMPLETE', task %></div></td>
+          <td><div><%= link_to 'RESUME', start_path(task) %></div></td>
+          <td><div><%= link_to 'COMPLETE', complete_path(task) %></div></td>
         <% end %>
         <% if task.not_started? %>
-          <td><div><%= link_to 'START', task %></div></td>
+          <td><div><%= link_to 'START', start_path(task.id) %></div></td>
           <td><div><%= link_to 'DELETE', task, method: :delete, data: { confirm: 'Are you sure?' } %><div></td>
         <% end %>
       </tr>
     <% end %>
+  </table> -->
+
+  <h4>DONE:</h4>
+  <table>
+    <% @done_today.each do |task| %>
+      <tr>
+        <td><%= link_to task.title, edit_task_path(task.id) %></td>
+        <td><%= task_total_work(task) %></td>
+        <td><%= task_total_breaks(task) %></td>
+          <td><div><%= link_to 'DO MORE', start_path(task.id) %></div></td>
+      </tr>
+    <% end %>
   </table>
+
 </div>
 
 

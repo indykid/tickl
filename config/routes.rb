@@ -1,13 +1,27 @@
 Tickle::Application.routes.draw do
 
-  resources :sessions, only: [ :new, :create, :destroy ]
-  get "login", to: "sessions#new"
-
   root to: "tasks#index"
-  #root to: "tasks#home"
-  resources :users
 
+  resources :sessions, only: [ :new, :create ] do
+    collection do
+      delete :destroy
+    end
+  end
+  resources :users
   resources :tasks
+  
+  get "login", to: "sessions#new"
+  get "tasks/:id/complete", to: "tasks#complete", as: "complete"
+  get "tasks/:id/take_break", to: "tasks#take_break", as: "break"
+  get "tasks/:id/stop_timer", to: "tasks#stop_timer", as: "stop"
+  get "tasks/:id/resume", to: "tasks#start", as: "resume"
+  get "tasks/:id/start", to: "tasks#start", as: "start"
+
+  get "tasks/:id/current", to: "tasks#current", as: "current"
+
+
+
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

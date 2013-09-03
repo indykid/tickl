@@ -16,14 +16,13 @@
   </div>
   <div class="float field">
     <%= f.label "Start now?" %>
-    <%= f.check_box :start_now, checked: true %>
+    <%= f.check_box :start_now, checked: false, id: "start_now" %>
   </div>
 
     <%#= f.label :completed %>
     <%#= f.check_box :completed %>
   
   <div class="float actions">
-    <%= f.submit 'BEGIN'%>
     <%= f.submit 'ADD'%>
   </div>
 <% end %>

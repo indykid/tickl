@@ -3,6 +3,57 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 
+// #B4CDCD lightcyan (grey with blueish tinge)
+
+
+/****** WRAPPER *******/
+
+#wrapper {
+  margin: 0;
+}
+
+
+/****** LEFT SIDEBAR *******/
+#left-sidebar {
+  float: left;
+  width: 15%;
+  padding: 15px;
+  background-color: black;//#9AC0CD;
+  color: white;
+  /* RGBa with 0.6 opacity */
+  //background-color: rgba(255, 255, 255, 0.80);
+
+}
+
+h1 {
+  display: inline;
+}
+
+
+/****** RIGHT SIDEBAR *******/
+
+#right-sidebar {
+  float: right;
+  width: 42%;
+  //height: 100%;
+  padding: 15px;
+  border-left: 2px dotted #B4CDCD;
+  background-color: #4F534F;
+  
+}
+
+
+/****** CONTAINER *******/
+
+#container {
+  float: left;
+  width: 43%;
+  padding: 15px;
+}
+
+
+
+
 .float {
   float: left;
   margin-right: 15px;
@@ -22,3 +73,38 @@ form {
 h3 {
   margin: 25px 0 5px 0;
 }
+
+body {
+  width: 100%;
+  margin: 0;
+  //background-image: url('/assets/clock_wallpaper.png');
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  // background-attachment: fixed;
+}
+
+/****** GLOBAL STYLES *******/
+
+.flash-message {
+  background: #54FF9F;//seagreen 1
+}
+
+// clearfix
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf {
+    *zoom: 1;
+}
+
