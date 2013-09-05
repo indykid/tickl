@@ -15,8 +15,8 @@ Tickle::Application.routes.draw do
   get "tasks/:id/complete", to: "tasks#complete", as: "complete"
   get "tasks/:id/break", to: "tasks#take_break", as: "break"
   get "tasks/:id/stop", to: "tasks#stop_timer", as: "stop"
-  get "tasks/:id/resume", to: "tasks#start", as: "resume"
-  get "tasks/:id/start", to: "tasks#start", as: "start"
+  get "tasks/:id/resume", to: "tasks#do_work", as: "resume"
+  get "tasks/:id/work", to: "tasks#do_work", as: "work"
 
   get "tasks/:id/current", to: "tasks#current", as: "current"
 

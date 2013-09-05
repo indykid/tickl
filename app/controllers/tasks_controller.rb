@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   # GET /tasks.json
 
   before_filter :authenticate
-  before_filter :check_running_task, only: [:create, :start]
+  before_filter :check_running_task, only: [:create, :do_work]
 
   # def user_home
   #   @task = current_user.tasks.new(params[:task])
@@ -47,16 +47,11 @@ class TasksController < ApplicationController
   end
 
   def complete
-    @task = Task.find(params[:id])
-
-    respond_to do |format|
-      if @task.complete
-        format.html { redirect_to tasks_url }
-        format.json { render nothing: true }
-      else 
-        format.html { render action: "show" }
-        format.json { render nothing: true, status: :unprocessable_entity }
-      end
+    task = Task.find(params[:id])
+    if task.complete
+      render json: task 
+    else 
+      render  json: task , status: :unprocessable_entity 
     end
   end
 
@@ -90,16 +85,16 @@ class TasksController < ApplicationController
 
   def running
     task = current_user.tasks.running.first unless  current_user.tasks.running.empty?
-
-      #binding.pry
+    if task.present?
       task[:elapsed_time] = DateTime.now.to_i - task.intervals.last.start_time.to_i
 
       task[:last_interval_state] = task.intervals.last.state
+    end
       render json: task
   
   end
 
-  def start
+  def do_work
     task = Task.find(params[:id]).create_interval
     task[:elapsed_time] = 0
     task[:new_interval_state] = "work"
@@ -179,7 +174,7 @@ private
   def check_running_task
     if task= current_user.tasks.running.first
         #redirect_to task and return
-      if  params[:action]=="start" || !(params[:task][:start_now]=="0")
+      if  params[:action]=="do_work" || !(params[:task][:start_now]=="0")
         task.stop_last_interval  
       end
     end

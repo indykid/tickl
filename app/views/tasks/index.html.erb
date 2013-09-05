@@ -1,14 +1,15 @@
 
-<div>
+<div id="form" class="cf">
   <%= render 'form' %>
 </div>
 <br />
-<div>
 
-  <script>
-    window.isRunningTask = <%= !@running_task.nil? %>;
-  </script>
+<script>
+  window.isRunningTask = <%= !@running_task.nil? %>;
+</script>
 
+
+<div id="today">
   <h3>TODAY:</h3>
 
   <table>
@@ -21,9 +22,11 @@
       <td><%= today_total_breaks(@worked_on_today) %> </td>
     </tr>
   </table>
+</div><!--TODAY div-->
 
-  <h4>TO DO:</h4>
 
+<div id="todo">
+  <h3>TO DO:</h3>
   <table id="resume_tasks"></table>
   <table id="start_tasks"></table>
 <!-- 
@@ -34,30 +37,32 @@
         <td><%#= link_to task.title, task_path(task) %></td>
         <td><%#= task_total_work(task) %></td>
         <%# if task.resume? %>
-          <td><div><%#= link_to 'RESUME', start_path(task) %></div></td>
+          <td><div><%#= link_to 'RESUME', work_path(task) %></div></td>
           <td><div><%#= link_to 'COMPLETE', complete_path(task) %></div></td>
         <%# end %>
         <%# if task.not_started? %>
-          <td><div><%#= link_to 'START', start_path(task.id) %></div></td>
+          <td><div><%#= link_to 'START', work_path(task.id) %></div></td>
           <td><div><%#= link_to 'DELETE', task, method: :delete, data: { confirm: 'Are you sure?' } %><div></td>
         <%# end %>
       </tr>
     <%# end %>
   </table>
  -->
-  <h4>DONE:</h4>
+</div><!--TODO div-->
+
+<div id="done">
+  <h3>DONE:</h3>
   <table id="done_tasks">
     <!--<%# @done_today.each do |task| %>
       <tr>
         <td><%#= link_to task.title, edit_task_path(task.id) %></td>
         <td><%#= task_total_work(task) %></td>
         <td><%#= task_total_breaks(task) %></td>
-          <td><div><%#= link_to 'DO MORE', start_path(task.id) %></div></td>
+          <td><div><%#= link_to 'DO MORE', work_path(task.id) %></div></td>
       </tr>
     <%# end %>-->
   </table>
-
-</div>
+</div><!--DONE div-->
 
 
 

@@ -15,8 +15,9 @@
 #wrapper1 {
   float:left;
   width: 100%;
-  min-height: 800px;
+  min-height: 700px;
   background-image: url("/assets/light_gray_bricks.gif");
+  background-attachment: fixed;
   //background: #004DF7;
   position:relative;
   right:50%;
@@ -25,8 +26,8 @@
 #wrapper2 {
     float:left;
     width:100%;
-    min-height: 800px;
-    background: #FBE9DC;
+    min-height: 700px;
+    //background-image: url("/assets/light-aluminum.png");
     position:relative;
     right:30%;
 }
@@ -34,9 +35,9 @@
 #wrapper3 {
     float:left;
     width:100%;
-    min-height: 800px;
+    min-height: 700px;
     background-image: url("/assets/light_gray_bricks.gif");
-    //background: #DEE1DC;
+    background-attachment: fixed;
     overflow:hidden;
     position:relative; 
 }
@@ -52,8 +53,8 @@
   position:relative;
   overflow:hidden;
   left:82%;
-  background-color: rgba(255, 255, 255, 0.60);
-  background-attachment: fixed;
+  //background-color: rgba(255, 255, 255, 0.60);
+  
 
 
   /* RGBa with 0.8 opacity */
@@ -71,10 +72,30 @@ h1 {
 #container {
   float: left;
   width: 46%;
-  padding: 2%;
+  padding: 3% 2%;
   position:relative;
   overflow:hidden;
   left:86%;
+  // -moz-box-shadow:  0 0 10px 10px;
+  //  -webkit-box-shadow:  0 0 10px 10px;
+  //  box-shadow: 0 0 10px 10px;
+}
+
+#form {
+  padding: 1%;
+  margin-bottom: 1%;
+  background-image: url("/assets/stripy.jpg");
+  -moz-box-shadow:  0 2px 20px 5px #838B8B;
+   -webkit-box-shadow:  0 2px 20px 5px #838B8B;
+   box-shadow: 0 2px 20px 5px #838B8B;
+  form {
+    input {
+      padding: 5px;
+      border: none;
+      border-radius: 3px;
+    }
+
+  }
 }
 
 
@@ -83,7 +104,7 @@ h1 {
 #right-sidebar {
   float: left;
   width: 26%;
-  padding: 2%;
+  padding: 3% 2%;
   height: 100%;
   position:relative;
   overflow:hidden;
@@ -96,6 +117,9 @@ h1 {
 
 #default-image {
   width: 80%;
+  // -moz-box-shadow:  0 0 10px 10px;
+  //  -webkit-box-shadow:  0 0 10px 10px;
+  //  box-shadow: 0 0 10px 10px;
 }
 
 
