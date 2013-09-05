@@ -16,11 +16,11 @@ class TasksController < ApplicationController
 
     @worked_on_today = current_user.tasks.updated_today
 
-    @todo_tasks = current_user.todo_in_desc
+    #@todo_tasks = current_user.todo_in_desc
 
-    @done_today = current_user.tasks.done.updated_today
+    #@done_today = current_user.tasks.done.updated_today
 
-    @running_task = current_user.tasks.running.first
+    #@running_task = current_user.tasks.running.first
     
     respond_to do |format|
       format.html # index.html.erb
@@ -28,7 +28,7 @@ class TasksController < ApplicationController
         hash = {
           resume: current_user.tasks.tasks_to_resume,
           start: current_user.tasks.tasks_to_start,
-          running: current_user.tasks.running.first
+          done_today: current_user.tasks.done.updated_today
         }
         render json: hash 
       }
@@ -52,27 +52,61 @@ class TasksController < ApplicationController
     respond_to do |format|
       if @task.complete
         format.html { redirect_to tasks_url }
+        format.json { render nothing: true }
       else 
         format.html { render action: "show" }
+        format.json { render nothing: true, status: :unprocessable_entity }
       end
     end
   end
 
   def take_break
-    @task = Task.find(params[:id]).take_break
-    redirect_to @task
-  end
+    task = Task.find(params[:id])
+    task.take_break
+    task[:elapsed_time] = 0
+    task[:new_interval_state] = "break"
+    render json: task
+    # respond_to do |format|
+    #   if @task.take_break
+    #     format.html { redirect_to tasks_url }
+    #     format.json { render nothing: true }
+    #   else
+    #     format.html { render action: "show" }
+    #     format.json { render nothing: true, status: :unprocessable_entity }
+    #   end
+    # end
 
 
-  def start
-    @task = Task.find(params[:id]).create_interval
-    redirect_to root_path#task_url(@task.id)
   end
 
   def stop_timer
-    @task = Task.find(params[:id]).stop_last_interval
-    redirect_to tasks_url
+    task = Task.find(params[:id])
+    if task.stop_last_interval
+      render nothing: true 
+    else
+      render nothing: true, status: :unprocessable_entity 
+    end
   end
+
+  def running
+    task = current_user.tasks.running.first unless  current_user.tasks.running.empty?
+
+      #binding.pry
+      task[:elapsed_time] = DateTime.now.to_i - task.intervals.last.start_time.to_i
+
+      task[:last_interval_state] = task.intervals.last.state
+      render json: task
+  
+  end
+
+  def start
+    task = Task.find(params[:id]).create_interval
+    task[:elapsed_time] = 0
+    task[:new_interval_state] = "work"
+    render json: task#task_url(@task.id)
+  end
+
+
 
   # GET /tasks/new
   # GET /tasks/new.json

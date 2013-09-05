@@ -12,7 +12,6 @@ class Task < ActiveRecord::Base
   scope :updated_today, lambda { where('updated_at > ?', Time.now.midnight.utc) }
 
   scope :running, joins(:intervals).where('intervals.stop_time is NULL')
-  scope :today, 
 
   def create_interval(state = "work")
     #if it has any running update its stop time

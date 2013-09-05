@@ -3,24 +3,60 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 
-// #B4CDCD lightcyan (grey with blueish tinge)
+//  #AEF0EE lightcyan
+// #BDBCB4, #B6B5A3, #C7C6BB grey 
+// #DEE1DC light grey
+// #E3BAA9 flesh
+// #FBE9DC light flesh
 
 
 /****** WRAPPER *******/
 
-#wrapper {
-  margin: 0;
+#wrapper1 {
+  float:left;
+  width: 100%;
+  min-height: 800px;
+  background-image: url("/assets/light_gray_bricks.gif");
+  //background: #004DF7;
+  position:relative;
+  right:50%;
+}
+
+#wrapper2 {
+    float:left;
+    width:100%;
+    min-height: 800px;
+    background: #FBE9DC;
+    position:relative;
+    right:30%;
+}
+
+#wrapper3 {
+    float:left;
+    width:100%;
+    min-height: 800px;
+    background-image: url("/assets/light_gray_bricks.gif");
+    //background: #DEE1DC;
+    overflow:hidden;
+    position:relative; 
 }
 
 
 /****** LEFT SIDEBAR *******/
 #left-sidebar {
   float: left;
-  width: 15%;
-  //padding: 15px;
-  background-color: black;//#9AC0CD;
+  width: 16%;
+  min-height: 900px;
+  padding: 2%;
   color: white;
-  /* RGBa with 0.6 opacity */
+  position:relative;
+  overflow:hidden;
+  left:82%;
+  background-color: rgba(255, 255, 255, 0.60);
+  background-attachment: fixed;
+
+
+  /* RGBa with 0.8 opacity */
   //background-color: rgba(255, 255, 255, 0.80);
 
 }
@@ -30,26 +66,38 @@ h1 {
 }
 
 
-/****** RIGHT SIDEBAR *******/
-
-#right-sidebar {
-  float: right;
-  width: 30%;
-  //height: 100%;
-  //padding: 10px;
-  //border-left: 2px dotted #B4CDCD;
-  background-color: #4F534F;
-  
-}
-
-
 /****** CONTAINER *******/
 
 #container {
   float: left;
-  width: 50%;
-  padding: 15px;
+  width: 46%;
+  padding: 2%;
+  position:relative;
+  overflow:hidden;
+  left:86%;
 }
+
+
+/****** RIGHT SIDEBAR *******/
+
+#right-sidebar {
+  float: left;
+  width: 26%;
+  padding: 2%;
+  height: 100%;
+  position:relative;
+  overflow:hidden;
+  left:90%;
+  //height: 100%;
+  //padding: 10px;
+  //border-left: 2px dotted #B4CDCD;
+  
+}
+
+#default-image {
+  width: 80%;
+}
+
 
 
 
@@ -76,7 +124,9 @@ h3 {
 
 body {
   width: 100%;
+  min-height: 800px;
   margin: 0;
+  font-family: 'Oxygen', sans-serif;
   //background-image: url('/assets/clock_wallpaper.png');
   // background-size: cover;
   // background-repeat: no-repeat;
@@ -84,6 +134,20 @@ body {
 }
 
 /****** GLOBAL STYLES *******/
+
+/* Box Model Hack */
+* {
+     -moz-box-sizing: border-box; /* Firexfox */
+     -webkit-box-sizing: border-box; /* Safari/Chrome/iOS/Android */
+     box-sizing: border-box; /* IE */
+}
+
+.shadow {
+   -moz-box-shadow:   inset  0 0 60px 40px #7A7A7A;
+   -webkit-box-shadow:  inset 0 0 60px 40px #7A7A7A;
+   box-shadow:        inset  0 0 60px 40px #7A7A7A;
+
+}
 
 .flash-message {
   background: #54FF9F;//seagreen 1
