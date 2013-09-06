@@ -4,6 +4,9 @@ $(function(){
     runningTaskData = null;
     break_phrase = "you're on break from:";
     work_phrase = "you're working on :";
+    no_task_phrase = "you haven't got any running tasks"
+    
+    height = 0;
   // if(window.isRunningTask==true){
   //   window.onbeforeunload = function(){
   //     return 'Are you sure you want to leave?';
@@ -11,8 +14,41 @@ $(function(){
   // }
 
 
-  function new_table_row(container, data, resume){
+    // CANVAS CLOCK
+    var cx = 75;
+    var cy  =75;
 
+    function toRadians(deg) {
+        return deg * Math.PI / 180
+    }
+
+
+  function draw_arc(begin, end, color){
+    console.log(begin, end, color)
+    canvas= document.getElementById("mycanvas")
+    ctx = canvas.getContext("2d")
+    //ctx.clearRect(0,0,500,500);
+    ctx.strokeStyle = "#004DF7"
+    ctx.beginPath();
+    ctx.arc(cx, cy, 50, 0, 2 * Math.PI, false);
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.fillStyle = color
+
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    
+    ctx.arc(cx,cy,50,toRadians(begin),toRadians(end));
+    ctx.lineTo(cx,cy);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+
+
+  function new_table_row(container, data, resume){
+    console.log(document.getElementById("mycanvas"))
     link = resume==true ? "<a data-id='"+data.id+"' class='resume-btn' href='#'>RESUME</a>" : "<a data-id='"+data.id+"' class='start-btn' href='#'>START</a>"
     if(data.completed==true) link= ""
     $(container).prepend("<tr><td>"+data.title+"</td><td>0</td><td>"+link+"</td><td><a href='/tasks/"+data.id+"' data-confirm='Are you sure?' data-method='delete' rel='nofollow'>DELETE</a></td></tr>" );
@@ -37,7 +73,6 @@ $(function(){
       url: "/tasks.json",
       data: {task:{start_now: startNow, title: taskTitle}},
       success: function(responseData){
-        console.log(startNow)
         if(startNow){
             $("#task_title").val("")
             getRunningTask()
@@ -50,7 +85,7 @@ $(function(){
     })
 
   });
-3
+
   $.ajax({
     url: "/tasks.json",
     success: function(data){
@@ -74,7 +109,6 @@ $(function(){
 
       window.interval = setInterval(function(){
         timer_counter++;
-        console.log("tick")
         minutes = 0,
         seconds = 0;
         if (timer_counter> 59){
@@ -88,7 +122,10 @@ $(function(){
           seconds = timer_counter;
           if(seconds< 10) seconds = "0"+ seconds
         }
-
+      
+        percentage = (100/3600)* timer_counter
+        degrees = (360 * (percentage/100)) - 90;
+        draw_arc(270,degrees, "#004DF7")
         $("#running_task_timer").text(minutes+" : "+seconds)
       }, 1000)
 
@@ -137,6 +174,7 @@ $(function(){
         url:"/tasks/"+runningTaskId+"/complete",
         success: function(responseData){
           $("#right-sidebar").html("");
+          $("#status").text(no_task_phrase);
           new_table_row("#done_tasks", responseData);
           stopTimer();
         },
@@ -191,7 +229,8 @@ $(function(){
 
           stopTimer();
           $("#right-sidebar").html("");
-          $("#default-sidebar").show()//show defualt view div inside $("#right-sidebar").html()
+          $("#status").text(no_task_phrase);
+          //$("#default-sidebar").show()//show defualt view div inside $("#right-sidebar").html()
         
         },
         error: function(){
@@ -206,12 +245,13 @@ $(function(){
     
 
     renderRunningTask = function(task){
-      info_phrase = task.last_interval_state== "break" ? break_phrase : work_phrase;
+      status_phrase = task.last_interval_state== "break" ? break_phrase : work_phrase;
       break_resume_link = task.last_interval_state== "break" ? "<a id='resume_task' href='#'>WORK</a>" : "<a id='take_break' href='#'>BREAK</a>";
       runningTaskId = task.id;
+      $("#status").text(status_phrase);
       $("#right-sidebar").html(
-        "<h4 id='status'>"+info_phrase+"</h4>"+
         "<p>"+task.title+"</p>"+
+        '<canvas id="mycanvas" width=150 height=150 ></canvas>'+
         "<h3 id='running_task_timer'></h3>"+
             "<a id='complete_running_task' href='#'>COMPLETE</a>"+" | "+
             break_resume_link+" | "+
@@ -243,44 +283,47 @@ $(function(){
     function getRunningTask(){ 
         $.ajax({
           url:"/running",
-          success:
-          function(responseData){
-            //console.log(responseData)
+          success: function(responseData){
             runningTaskData = responseData;
             $("#default-sidebar").hide();
             if(responseData) renderRunningTask(responseData)
-          }
+          },
+        error: function(){
+          alert("something went wrong, please try again")
+        }
         })
     }
     getRunningTask()
 
 
-    // CANVAS CLOCK
-    var cx = 200;
-    var cy  =200;
+    function getActivity(){
+      $.ajax({
+        url: "/activity",
+        success: function(responseData){
+          $.each(responseData, function(index, item){
+            var start_at = new Date(item.start_time),
+                  stop_at = new Date(item.stop_time),
+                  height = (stop_at - start_at)/(36000),
+                  element = $("<li style='height:"+ height +"px'></li>");
 
-    function toRadians(deg) {
-        return deg * Math.PI / 180
+            element.addClass(item.state);
+            $("#bar").prepend(element);
+
+            //debugger
+            //console.log();
+            //$("#activity").append("<li>"+item.state+"->"+(start_at.getHours()+" : "+start_at.getMinutes()+" : "+start_at.getSeconds()) + "--" + stop_at.getHours()+" : "+stop_at.getMinutes()+" : "+stop_at.getSeconds()+"</li>")
+          });
+
+        },
+        error: function(){
+          alert("something went wrong, please try again")
+        }
+      })
     }
+    getActivity();
 
 
-  function draw_arc(begin, end, color){
 
-    canvas= document.getElementById("mycanvas")
-    ctx = canvas.getContext("2d")
-    //ctx.clearRect(0,0,500,500);
-
-    ctx.fillStyle = color
-
-    ctx.beginPath();
-    ctx.moveTo(cx,cy);
-    ctx.arc(cx,cy,50,toRadians(begin),toRadians(end));
-    ctx.lineTo(cx,cy);
-    ctx.closePath();
-    ctx.fill();
-  }
-  draw_arc(270, 360, "red")
-  draw_arc(360, 50, "green")
-  draw_arc(50, 150, "red")
+  
 });
 

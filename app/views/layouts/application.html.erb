@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Tickle</title>
+  <title>tickl</title>
   <link href='http://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.1/pure-min.css">
   <%= stylesheet_link_tag "application", :media => "all" %>
@@ -23,54 +23,61 @@
   <%= message %>
   </div>
   <% end %>
-  <div id="wrapper3">
+  
+  <!-- <div id="wrapper3">
     <div id="wrapper2">
-      <div id="wrapper1">
+      <div id="wrapper1"> -->
       
         <div id="left-sidebar">
+          <div id="stripes"></div>
+          <div class="icon">
+            <a href="/"><img id="icon" src="/assets/clock-icon.png"></a>
+            <h1>tickl</h1>
+          </div>
 
-          <a href="/"><img src="/assets/clock-icon.png" width=30></a>
-          <h1>tickle</h1>
           <nav>
-
           <% if current_user %>
-            <p> hello, <%= current_user.name %></p>
-            <%=link_to "logout", sessions_path, method: :delete, data: { confirm: "Are you sure?" } %>
+            <p> hello, <%= current_user.name %>!</p><br />
+            <%=link_to "logout", sessions_path, method: :delete, data: { confirm: "Are you sure?" }, class: "nav" %>
             <% else %>
-            <%= link_to "please login", login_path %>
+            <%= link_to "sign up", new_user_path, class: "nav" %><br />
+            <%= link_to "login", login_path, class: "nav" %>
             <% end %>
           </nav>
 
-          <% if @running_task %>
-            <% if @running_task.working? %>
-              <p>you're working on:</p>
-              <p><%= link_to @running_task.title, task_path(@running_task) %></p>
-            <% elsif @running_task.on_break?%>
-              <p>you're on break from:</p>
-              <p><%= link_to @running_task.title, task_path(@running_task) %></p>
-            <% end %>
-          <% end %>
         </div>
 
       
-
+      <main class="cf">
         <div id="container">
           <%= yield %>
         </div>
 
-        <div id="right-sidebar">
-          <canvas id="mycanvas" width=300 height=300 ></canvas>
-          <div id="default-sidebar">
-            <h4 id="status">you haven't got any running tasks</h4>
-            <img id="default-image" src="/assets/clock-icon.png">
+        <div id="progress_bar" class="cf">
+          <ul id="bar">
+          </ul>
+        </div><!--PROGRESS BAR-->
+      </main>
+      
+    <div id="sidebar-wrapper">
+      <h4 id="status">you haven't got any running tasks!</h4>
+      <div id="default-sidebar">
+        
+        <!-- <img id="default-image" src="/assets/clock-icon.png"> -->
+      </div><!--DEFAULT SIDEBAR-->
 
-          </div>
-        </div>
+      <div id="right-sidebar">
+      </div><!--RIGHT SIDEBAR-->
 
-      </div><!--wrapper1-->
-    </div><!--wrapper2-->
-  </div><!--wrapper3-->
+    </div><!--SIDEBAR WRAPPER-->  
 
-  
+      <!--wrapper1</div>-->
+    <!--wrapper2</div>-->
+  <!--wrapper3</div>-->
+
+
+
+      
+
 </body>
 </html>

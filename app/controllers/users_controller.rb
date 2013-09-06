@@ -23,6 +23,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def activity
+    intervals = current_user.tasks.updated_today.map(&:intervals).flatten
+    render json: intervals
+  end
 
   def show
     @user = User.find(params[:id])
