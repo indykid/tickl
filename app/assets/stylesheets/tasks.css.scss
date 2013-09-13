@@ -19,13 +19,13 @@
    box-shadow: 0 3px 15px 3px #838B8B;
 }
 #today {
-  background-color: rgba(172, 228, 222, 0.80);
+  background-image: url("/assets/white_pattern.jpeg");
 }
 #todo {
-  background-color: rgba(236, 129, 132, 0.70);
+  background-image: url("/assets/circuit-board-grey.png");
 }
 #done {
-  background-color: rgba(199, 228, 154, 0.80);
+  background-image: url("/assets/grey-striped-background.png");
 }
 
 
@@ -55,32 +55,7 @@ h4#status {
 
 }
 
-.nav {
-  text-decoration: none;
-  color: #004DF7;
-}
 
-#icon {
-  display: inline;
-  width: 30px;
-  vertical-align: middle;
-}
-
-.icon {
-  text-align: center;
-  -moz-box-shadow:  0 1px 3px 1px #838B8B;
-   -webkit-box-shadow:  0 1px 3px 1px #838B8B;
-   box-shadow: 0 1px 3px 1px #838B8B;
-}
-
-#stripes {
-  min-width: 136px;
-  min-height: 250px;
-  background-image: url("/assets/stripy.jpg");
-  -moz-box-shadow:  0 -1px 10px 3px #838B8B;
-   -webkit-box-shadow:  0 -1px10px 3px #838B8B;
-   box-shadow: 0 -1px 10px 3px #838B8B;
-}
 
 body {
   width: 100%;
@@ -93,6 +68,7 @@ body {
 
 /****** LEFT SIDEBAR *******/
 #left-sidebar {
+  position: fixed;
   float: left;
   width: 14%;
   min-height: 900px;
@@ -112,7 +88,35 @@ h1 {
   color: #6AF218;
   vertical-align: middle;
   font-weight: bold;
-  
+  text-shadow: 2px 1px #fff, 3px 3px 5px #838B8B; 
+}
+
+.nav {
+  text-decoration: none;
+  color: #004DF7;
+}
+
+#icon {
+  display: inline;
+  width: 30px;
+  vertical-align: middle;
+}
+
+.icon {
+  text-align: center;
+  -moz-box-shadow:  0 1px 3px 1px #838B8B;
+   -webkit-box-shadow:  0 1px 3px 1px #838B8B;
+   box-shadow: 0 1px 3px 1px #838B8B;
+}
+
+#stripes {
+  min-width: 12%;
+  min-height: 250px;//31%;
+  //overflow: auto;
+  background-image: url("/assets/stripy.jpg");
+  -moz-box-shadow:  0 -1px 4px 1px #838B8B;
+  -webkit-box-shadow:  0 -1px 4px 1px #838B8B;
+  box-shadow: 0 -1px 4px 1px #838B8B;
 }
 
 
@@ -122,7 +126,7 @@ main {
   float: left;
   width: 56%;
   padding: 0 1%;
-  margin: o;
+  margin: 0 0 0 14%;
   // position:relative;
   // overflow:hidden;
   // left:86%;

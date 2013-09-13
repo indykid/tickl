@@ -24,8 +24,11 @@ class UsersController < ApplicationController
   end
 
   def activity
-    intervals = current_user.tasks.updated_today.map(&:intervals).flatten
-    render json: intervals
+    intervals_of_tasks = current_user.tasks.map(&:intervals).flatten
+
+    todays_intervals = intervals_of_tasks.select { |interval| interval.updated_at > Time.now.midnight.utc }
+
+    render json: todays_intervals
   end
 
   def show

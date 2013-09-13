@@ -3,6 +3,8 @@ class Interval < ActiveRecord::Base
 
   belongs_to :task
 
+  # scope :for_today, lambda { where('updated_at > ?', Time.now.midnight.utc) }
+
   STATES = [ "work", "break" ]
 
   STATES.each do |state|
@@ -13,6 +15,10 @@ class Interval < ActiveRecord::Base
     define_method("#{state}!") do
       self.update_attribute(:state, state)
     end
+  end
+
+  def self.for_today
+    updated_at > Time.now.midnight.utc
   end
   
 end

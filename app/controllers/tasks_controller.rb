@@ -59,7 +59,7 @@ class TasksController < ApplicationController
     task = Task.find(params[:id])
     task.take_break
     task[:elapsed_time] = 0
-    task[:new_interval_state] = "break"
+    task[:interval_state] = "break"
     render json: task
     # respond_to do |format|
     #   if @task.take_break
@@ -97,8 +97,8 @@ class TasksController < ApplicationController
   def do_work
     task = Task.find(params[:id]).create_interval
     task[:elapsed_time] = 0
-    task[:new_interval_state] = "work"
-    render json: task#task_url(@task.id)
+    task[:interval_state] = "work"
+    render json: task #task_url(@task.id)
   end
 
   def 
@@ -172,7 +172,7 @@ class TasksController < ApplicationController
 
 private
   def check_running_task
-    if task= current_user.tasks.running.first
+    if task = current_user.tasks.running.first
         #redirect_to task and return
       if  params[:action]=="do_work" || !(params[:task][:start_now]=="0")
         task.stop_last_interval  
