@@ -123,7 +123,7 @@ $(function(){
       stopTimer()
       timer_counter += elapsed_time;
 
-      window.interval = setInterval(function(){
+      window.timerInterval = setInterval(function(){
         timer_counter++;
         minutes = 0,
         seconds = 0;
@@ -141,7 +141,7 @@ $(function(){
 
         percentage = (100/3600)* timer_counter
         degrees = (360 * (percentage/100)) - 90;
-        draw_arc(270,degrees, "#004DF7")
+        draw_arc(270, degrees, "#004DF7")
         $("#running_task_timer").text(minutes+" : "+seconds)
 
          if(state == "work" && timer_counter>=(60*25)){
@@ -185,7 +185,7 @@ $(function(){
     }
 
     stopTimer = function(){
-      clearInterval(window.interval)
+      clearInterval(window.timerInterval)
       timer_counter = 0;
       
     }
@@ -333,10 +333,6 @@ $(function(){
 
             element.addClass(item.state);
             $("#bar").prepend(element);
-
-            //debugger
-            //console.log();
-            //$("#activity").append("<li>"+item.state+"->"+(start_at.getHours()+" : "+start_at.getMinutes()+" : "+start_at.getSeconds()) + "--" + stop_at.getHours()+" : "+stop_at.getMinutes()+" : "+stop_at.getSeconds()+"</li>")
           });
 
         },

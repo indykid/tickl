@@ -14,7 +14,7 @@ class TasksController < ApplicationController
   def index
     @task = current_user.tasks.new
 
-    @worked_on_today = current_user.tasks.updated_today
+    #@worked_on_today = current_user.tasks.updated_today
 
     #@todo_tasks = current_user.todo_in_desc
 
