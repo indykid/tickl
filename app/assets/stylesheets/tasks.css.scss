@@ -40,6 +40,10 @@
   }
 }
 
+.field {
+  margin: 5px 0 10px; 
+}
+
 #flash-message {
   color: green;
 }
@@ -47,12 +51,12 @@
 h4#status {
   color: #1BBFE0;
   line-height: 2;
+  font-weight: normal;
   text-align: center;
   background-color: rgba(255, 255, 255, 0.80);
   -moz-box-shadow:  0 2px 20px 3px #838B8B;
-   -webkit-box-shadow:  0 2px 20px 3px #838B8B;
-   box-shadow: 0 2px 20px 3px #838B8B;
-
+  -webkit-box-shadow:  0 2px 20px 3px #838B8B;
+  box-shadow: 0 2px 20px 3px #838B8B;
 }
 
 
@@ -61,9 +65,12 @@ body {
   width: 100%;
   min-height: 800px;
   margin: 0;
-  font-family: 'Oxygen', sans-serif;
+  font-family: 'Helvetica','Oxygen', sans-serif;
   background-image: url("/assets/light_gray_bricks.gif");
   background-attachment: fixed;
+  a {
+    text-decoration: none;
+  }
 }
 
 /****** LEFT SIDEBAR *******/
@@ -87,14 +94,30 @@ h1 {
   display: inline;
   color: #6AF218;
   vertical-align: middle;
-  font-weight: bold;
+  font-family: 'Oxygen', sans-serif;
+  //font-weight: bold;
   text-shadow: 2px 1px #fff, 3px 3px 5px #838B8B; 
 }
 
 .nav {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 5px; 
+  text-align: center;
+  background-color: rgb(220, 220, 220);
+  -moz-box-shadow:  0 1px 3px 1px #838B8B;
+  -webkit-box-shadow:  0 1px 3px 1px #838B8B;
+  box-shadow: 0 1px 3px 1px #838B8B;
+  
+}
+
+
+.nav_link {
   text-decoration: none;
   color: #004DF7;
 }
+
+
 
 #icon {
   display: inline;
@@ -104,9 +127,11 @@ h1 {
 
 .icon {
   text-align: center;
+  background-color: rgb(220, 220, 220);
   -moz-box-shadow:  0 1px 3px 1px #838B8B;
    -webkit-box-shadow:  0 1px 3px 1px #838B8B;
    box-shadow: 0 1px 3px 1px #838B8B;
+   margin-bottom: 15px;
 }
 
 #stripes {

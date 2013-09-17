@@ -4,9 +4,9 @@
 </div>
 <br />
 
-<script>
-  window.isRunningTask = <%= !@running_task.nil? %>;
-</script>
+<!--<script>
+//   window.isRunningTask = <%#= !@running_task.nil? %>;
+</script>-->
 
 
 <div id="today">
@@ -17,10 +17,12 @@
       <th>FOCUS TIME</th>
       <th>BREAK TIME</th>
     </tr>
-    <tr>
-      <td><%= today_total_work(@worked_on_today) %> </td>
-      <td><%= today_total_breaks(@worked_on_today) %> </td>
+
+    <tr id="daily_total">
+      <td id="todays_work"></td>
+      <td id="todays_breaks"></td>
     </tr>
+
   </table>
 </div><!--TODAY div-->
 

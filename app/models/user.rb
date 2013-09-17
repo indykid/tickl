@@ -17,6 +17,10 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true 
 
 
+  def todays_intervals
+    self.tasks.map(&:intervals).flatten.select { |interval| interval.updated_at > Time.now.midnight.utc }
+  end
+
   def todo_in_desc
     tasks_in_desc = tasks.where(completed: false).order('tasks.updated_at desc').includes(:intervals)
     tasks_to_resume = tasks_in_desc.select(&:resume?) 

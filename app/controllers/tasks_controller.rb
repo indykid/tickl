@@ -1,26 +1,21 @@
 class TasksController < ApplicationController
-  # GET /tasks
-  # GET /tasks.json
+  
 
   before_filter :authenticate
   before_filter :check_running_task, only: [:create, :do_work]
 
-  # def user_home
-  #   @task = current_user.tasks.new(params[:task])
-  #   @tasks = current_user.tasks
 
-  # end
+
+  # GET /tasks
+  # GET /tasks.json
 
   def index
     @task = current_user.tasks.new
 
-    #@worked_on_today = current_user.tasks.updated_today
+    todays_work_intervals = current_user.todays_intervals.select{ |interval| interval.work? }
 
-    #@todo_tasks = current_user.todo_in_desc
+    todays_breaks_intervals = current_user.todays_intervals.select{ |interval| interval.break? }
 
-    #@done_today = current_user.tasks.done.updated_today
-
-    #@running_task = current_user.tasks.running.first
     
     respond_to do |format|
       format.html # index.html.erb
@@ -28,7 +23,9 @@ class TasksController < ApplicationController
         hash = {
           resume: current_user.tasks.tasks_to_resume,
           start: current_user.tasks.tasks_to_start,
-          done_today: current_user.tasks.done.updated_today
+          done_today: current_user.tasks.done.updated_today,
+          todays_work_duration: duration_of_intervals(todays_work_intervals),
+          todays_breaks_duration: duration_of_intervals(todays_breaks_intervals)
         }
         render json: hash 
       }
@@ -101,17 +98,24 @@ class TasksController < ApplicationController
     render json: task #task_url(@task.id)
   end
 
-  def 
+  def activity
+    intervals_of_tasks = current_user.tasks.map(&:intervals).flatten
+
+    todays_intervals = intervals_of_tasks.select { |interval| interval.updated_at > Time.now.midnight.utc }
+
+    render json: todays_intervals
+  end
+
+
 
   # GET /tasks/new
-  # GET /tasks/new.json
   def new
     @task = Task.new
 
-    respond_to do |format|
-      format.html # new.html.erb
-      #format.json { render json: @task }
-    end
+    # respond_to do |format|
+    #   format.html new.html.erb
+    #   format.json { render json: @task }
+    # end
   end
 
   # GET /tasks/1/edit
@@ -179,4 +183,10 @@ private
       end
     end
   end
+
+  def duration_of_intervals(intervals)
+    intervals.inject(0) { |sum, interval| sum+interval.duration }
+  end
+
+
 end

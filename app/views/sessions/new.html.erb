@@ -1,18 +1,22 @@
+
+
+<% unless current_user %>
+     <%=  javascript_include_tag "sessions" %>
+  <% end %>
+
 <div class="login">
   <h2>login</h2>
-
-
   <%= form_tag sessions_path do %>
+    
+    <%= label_tag :email %><br>
     <div class="field">
-      <%#= label_tag :email %>
-      <%= text_field_tag :email, params[:email], placeholder: "email" %>
-    </div><br>
+      <%= text_field_tag :email, params[:email] %>
+    </div>
+    
+    <%= label_tag :password %><br>
     <div class="field">
-      <%#= label_tag :password %>
-      <%= password_field_tag :password, placeholder: "password" %>
+      <%= password_field_tag :password%>
     </div><br>
     <div class="actions"><%= submit_tag "Log in" %></div>
   <% end %>
-
-  
 </div>

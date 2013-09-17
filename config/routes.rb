@@ -22,7 +22,7 @@ Tickle::Application.routes.draw do
 
 
 
-  get "activity", to: "users#activity", as: "activity"
+  get "activity", to: "tasks#activity", as: "activity"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

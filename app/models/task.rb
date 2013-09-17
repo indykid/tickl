@@ -19,12 +19,10 @@ class Task < ActiveRecord::Base
     self
   end
 
-  # def self.running_task(user)
-  #   current_user_tasks = self.where(user_id: user.id)
-  #   current_user_tasks.detect do |task|
-  #     task.intervals.select { |interval| interval.stop_time.nil? }.any?
-  #   end
-  # end
+
+  def duration_of_intervals(intervals)
+    intervals.inject(0) { |sum, interval| sum+interval.duration }
+  end
 
   def active? #show.html
     self.intervals.last.stop_time.nil? if self.intervals.last
@@ -78,6 +76,9 @@ class Task < ActiveRecord::Base
   def self.tasks_to_start
     where(completed: false).order('tasks.updated_at desc').includes(:intervals).select(&:not_started?) 
   end
+
+
+
   # tasks_to_resume = tasks_in_desc.select(&:resume?) 
   #   tasks_not_started = tasks_in_desc.select(&:not_started?)
 

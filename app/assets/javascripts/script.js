@@ -23,7 +23,7 @@ $(function(){
             if(responseData) renderRunningTask(responseData)
           },
         error: function(){
-          alert("something went wrong, please try again")
+          alert("couldn't retrieve running task, please try again")
         }
         })
     }
@@ -49,9 +49,7 @@ $(function(){
     ctx.arc(cx, cy, 50, 0, 2 * Math.PI, false);
     ctx.stroke();
     ctx.closePath();
-
     ctx.fillStyle = color
-
     ctx.beginPath();
     ctx.moveTo(cx,cy);
     
@@ -63,20 +61,22 @@ $(function(){
 
 
 
-  function new_table_row(container, data, resume){
-    console.log(document.getElementById("mycanvas"))
+  function new_table_row(element, data, resume){
+    //console.log(document.getElementById("mycanvas"))
     link = resume==true ? "<a data-id='"+data.id+"' class='resume-btn' href='#'>RESUME</a>" : "<a data-id='"+data.id+"' class='start-btn' href='#'>START</a>"
     if(data.completed==true) link= ""
-    $(container).prepend("<tr id='task_" + data.id +"'><td>"+data.title+"</td><td>0</td><td>"+link+"</td><td><a href='/tasks/"+data.id+"' data-confirm='Are you sure?' data-method='delete' rel='nofollow'>DELETE</a></td></tr>" );
+    $(element).prepend("<tr id='task_" + data.id +"'><td>"+data.title+"</td><td></td><td>"+link+"</td><td><a href='/tasks/"+data.id+"' data-confirm='Are you sure?' data-method='delete' rel='nofollow'>DELETE</a></td></tr>" );
     
-
-
     $(".start-btn, .resume-btn").bind("click", function(event){
       id = $(this).data("id")
       $(this).parent().parent().remove()
       stopTimer();
       startTask(id);
     })
+  }
+
+  function new_table_cell(element, data) {
+    $(element).text(data);
   }
 
 
@@ -101,33 +101,47 @@ $(function(){
 
   });
 
-  $.ajax({
-    url: "/tasks.json",
-    success: function(data){
-      $.each(data.resume, function(index, task){
-        new_table_row("#resume_tasks", task, true);
-      })
 
-      $.each(data.start, function(index, task){
-        new_table_row("#start_tasks", task);
-      })
+  function getTodos(){
+    $.ajax({
+      url: "/tasks.json",
+      success: function(data){
 
-      $.each(data.done_today, function(index, task){
-        new_table_row("#done_tasks", task);
-      })
-      
-    }
-  })
+        $.each(data.resume, function(index, task){
+          new_table_row("#resume_tasks", task, true);
+        });
 
-    runTimer = function(elapsed_time, state){
-      stopTimer()
-      timer_counter += elapsed_time;
+        $.each(data.start, function(index, task){
+          new_table_row("#start_tasks", task);
+        });
 
-      window.timerInterval = setInterval(function(){
-        timer_counter++;
-        minutes = 0,
-        seconds = 0;
-        if (timer_counter> 59){
+        $.each(data.done_today, function(index, task){
+          new_table_row("#done_tasks", task);
+        });
+      }
+
+    });
+  }
+  getTodos();
+
+  
+
+  function getTotals(){
+    $.ajax({
+      url: "/tasks.json",
+      success: function(data){
+        var todaysBreaks = convertMilliseconds(data.todays_breaks_duration);
+        var todaysWork = convertMilliseconds(data.todays_work_duration);
+
+        new_table_cell("#todays_work", todaysWork);
+        new_table_cell("#todays_breaks", todaysBreaks);
+      }
+    });
+  }
+  getTotals();
+
+    function convertMilliseconds(timer_counter){
+       if (timer_counter> 59){
           minutes = parseInt(timer_counter / 60)
           if(minutes< 10) minutes = "0"+ minutes
           seconds = timer_counter- (minutes * 60);
@@ -137,22 +151,47 @@ $(function(){
           minutes = "00"
           seconds = timer_counter;
           if(seconds< 10) seconds = "0"+ seconds
-        }
+        }  
+      return (minutes+":"+seconds)
+    }
+
+    runTimer = function(elapsed_time, intervalState){
+      stopTimer()
+      timer_counter += elapsed_time;
+
+      window.timerInterval = setInterval(function(){
+        timer_counter++;
+        minutes = 0,
+        seconds = 0;
+
+        convertMilliseconds(timer_counter);
+        // if (timer_counter> 59){
+        //   minutes = parseInt(timer_counter / 60)
+        //   if(minutes< 10) minutes = "0"+ minutes
+        //   seconds = timer_counter- (minutes * 60);
+        //   if(seconds< 10) seconds = "0"+ seconds
+        // }
+        // else{
+        //   minutes = "00"
+        //   seconds = timer_counter;
+        //   if(seconds< 10) seconds = "0"+ seconds
+        // }
 
         percentage = (100/3600)* timer_counter
         degrees = (360 * (percentage/100)) - 90;
         draw_arc(270, degrees, "#004DF7")
         $("#running_task_timer").text(minutes+" : "+seconds)
 
-         if(state == "work" && timer_counter>=(60*25)){
+         if(intervalState == "work" && timer_counter>=(60*25)){
             stopWorkResponse = confirm("would you like to take a break now? (click cancel to continue working)")
             if(stopWorkResponse == true) {
               takeBreak();
             } else {
               work();
             }
-          } 
-          else if(state == "break" && timer_counter==(60*5)){
+          }
+          else if(intervalState == "break" && timer_counter>=(60*5)){
+            console.log("5min")
             stopBreakResponse = confirm("5 min are up, back to work?")
             if(stopBreakResponse == true) {
             work();
@@ -297,29 +336,33 @@ $(function(){
 
       $("#complete_running_task").on("click", function(event){
         completeTask();
+        displayActivity()
+        getTotal();
       });
 
       $("#take_break").on("click", function(){
         takeBreak(runningTaskId);
+        displayActivity()
+        getTotals();
       });
 
       $("#resume_task").on("click", function(){
         stopTimer();
         work(runningTaskId);
+        displayActivity()
+        getTotals();
       });
 
       $("#stop-timer").on("click", function(){
         stopTimer();
         moveBackToList();
         stopLastInterval();
+        displayActivity()
+        getTotals();
       });
-
     }
 
       
-    
-
-
     function displayActivity(){
       $.ajax({
         url: "/activity",

@@ -9,7 +9,6 @@
   <% if current_user %>
      <%=   javascript_include_tag "script" %>
   <% end %>
-  
   <%= csrf_meta_tags %>
 </head>
 
@@ -24,7 +23,7 @@
   </div>
   <% end %>
   
-  
+  <div>
       
         <div id="left-sidebar">
           <div id="stripes"></div>
@@ -37,10 +36,15 @@
           <nav>
           <% if current_user %>
             <p> hello, <%= current_user.name %>!</p><br />
-            <%=link_to "logout", sessions_path, method: :delete, data: { confirm: "Are you sure?" }, class: "nav" %>
+            <div class="nav">
+            <%=link_to "logout", sessions_path, method: :delete, data: { confirm: "Are you sure?" }, class: "nav_link" %>
             <% else %>
-            <%= link_to "sign up", new_user_path, class: "nav" %><br />
-            <%= link_to "login", login_path, class: "nav" %>
+            <div class="nav">
+              <%= link_to "sign up", new_user_path, class: "nav_link" %>
+            </div>
+            <div class="nav">
+              <%= link_to "login", login_path, class: "nav_link" %>
+            </div>
             <% end %>
           </nav>
 
@@ -59,11 +63,11 @@
       </main>
       
     <div id="sidebar-wrapper">
-      <h4 id="status">you haven't got any running tasks!</h4>
+      <h4 id="status">you haven't got any running tasks</h4>
       <div id="default-sidebar">
         
         <!-- <img id="default-image" src="/assets/clock-icon.png"> -->
-        
+
       </div><!--DEFAULT SIDEBAR-->
 
       <div id="right-sidebar">
@@ -73,7 +77,7 @@
 
 
 
-      
+  </div><!--WRAPPER-->  
 
 </body>
 </html>

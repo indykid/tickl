@@ -3,8 +3,6 @@ class Interval < ActiveRecord::Base
 
   belongs_to :task
 
-  # scope :for_today, lambda { where('updated_at > ?', Time.now.midnight.utc) }
-
   STATES = [ "work", "break" ]
 
   STATES.each do |state|
@@ -21,4 +19,12 @@ class Interval < ActiveRecord::Base
     updated_at > Time.now.midnight.utc
   end
   
+  def duration
+    if self.stop_time
+      self.stop_time - self.start_time 
+    else
+      0
+    end
+  end
+
 end
